@@ -7,7 +7,7 @@ import (
 	"net/http"
 	//"strings"
 
-	"github.com/dchote/survey-engine/config"
+	"github.com/dchote/gopicamera/config"
 
 	"github.com/labstack/echo"
 )

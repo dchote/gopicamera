@@ -10,7 +10,8 @@ import (
 
 type ConfigStruct struct {
 	Camera struct {
-		DeviceID int `json:"deviceID"`
+		DeviceID int    `json:"deviceID"`
+		Name     string `json:"name"`
 	} `json:"camera"`
 	Server struct {
 		ListenAddress string `json:"listenAddress"`
@@ -18,7 +19,7 @@ type ConfigStruct struct {
 	} `json:"server"`
 	API struct {
 		APIURL    string `json:"APIURL"`
-		CameraURL string `json:cameraURL`
+		CameraURL string `json:"cameraURL"`
 	}
 }
 

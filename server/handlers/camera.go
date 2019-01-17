@@ -15,6 +15,7 @@ import (
 type CameraObject struct {
 	APIURL    string `json:"APIURL"`
 	CameraURL string `json:"cameraURL"`
+	Name      string `json:"name"`
 }
 
 type SurveyObjectList struct {
@@ -30,6 +31,7 @@ func CameraList() echo.HandlerFunc {
 		camera := &CameraObject{
 			APIURL:    config.Config.API.APIURL,
 			CameraURL: config.Config.API.CameraURL,
+			Name:      config.Config.Camera.Name,
 		}
 
 		cameraList.Cameras = append(cameraList.Cameras, camera)

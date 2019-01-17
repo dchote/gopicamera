@@ -32,12 +32,19 @@ Usage: gopicamera [options]
 
 Options:
   -c, --config=<json>           Specify config file [default: ./config.json]
+	-d, --camera-device=<device>  Specify the devide id of the camera [default: 0]
   -h, --help                    Show this screen.
   -v, --version                 Show version.
 `
 	args, _ := docopt.ParseArgs(usage, os.Args[1:], VERSION)
 
 	config.ConfigFile, _ = args.String("--config")
+
+	// override the camera device if specified
+	cameraDeviceOverride, _ := args.Int("--camera-device")
+	if cameraDeviceOverride != config.Config.Camera.DeviceID {
+		config.Config.Camera.DeviceID = cameraDeviceOverride
+	}
 
 	_, err = config.LoadConfig(config.ConfigFile)
 	if err != nil {

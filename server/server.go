@@ -68,7 +68,11 @@ func StartServer(cfg config.ConfigStruct, assets *rice.Box) {
 	e.GET("/health", handlers.Health())
 	e.GET("/config", handlers.Config())
 
+	// camera MJPEG stream
 	e.GET("/camera", echo.WrapHandler(camera.Stream))
+
+	// versioned API logic
+	e.GET("/v1/cameras", handlers.CameraList())
 
 	log.Println("starting server on http://" + cfg.Server.ListenAddress + ":" + strconv.Itoa(cfg.Server.ListenPort))
 	e.Logger.Fatal(e.Start(cfg.Server.ListenAddress + ":" + strconv.Itoa(cfg.Server.ListenPort)))

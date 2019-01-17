@@ -17,7 +17,8 @@ type ConfigStruct struct {
 		ListenPort    int    `json:"listenPort"`
 	} `json:"server"`
 	API struct {
-		APIURL string `json:"APIURL"`
+		APIURL    string `json:"APIURL"`
+		CameraURL string `json:cameraURL`
 	}
 }
 
@@ -55,6 +56,7 @@ func LoadConfig(file string) (*ConfigStruct, error) {
 
 	// build API endpoint URL
 	Config.API.APIURL = "http://" + apiListenAddress + ":" + strconv.Itoa(Config.Server.ListenPort) + "/v1"
+	Config.API.CameraURL = "http://" + apiListenAddress + ":" + strconv.Itoa(Config.Server.ListenPort) + "/camera"
 
 	return Config, err
 }

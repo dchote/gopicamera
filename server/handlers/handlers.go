@@ -24,6 +24,6 @@ func Health() echo.HandlerFunc {
 
 func Config() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		return c.JSON(http.StatusOK, config.Config)
+		return c.JSON(http.StatusOK, config.Config.API)
 	}
 }

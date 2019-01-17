@@ -40,15 +40,15 @@ Options:
 
 	config.ConfigFile, _ = args.String("--config")
 
-	// override the camera device if specified
-	cameraDeviceOverride, _ := args.Int("--camera-device")
-	if cameraDeviceOverride != config.Config.Camera.DeviceID {
-		config.Config.Camera.DeviceID = cameraDeviceOverride
-	}
-
 	_, err = config.LoadConfig(config.ConfigFile)
 	if err != nil {
 		log.Fatalf("Unable to load "+config.ConfigFile+" ERROR=", err)
+	}
+
+	// override the camera device if specified
+	cameraDeviceOverride, _ := args.Int("--camera-device")
+	if cameraDeviceOverride > 0 {
+		config.Config.Camera.DeviceID = cameraDeviceOverride
 	}
 
 	log.Printf("Config: %+v", config.Config)

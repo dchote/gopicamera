@@ -10,6 +10,7 @@ import (
 	//"sync"
 	"time"
 
+	"github.com/dchote/gopicamera/camera"
 	"github.com/dchote/gopicamera/config"
 	"github.com/dchote/gopicamera/server/handlers"
 
@@ -66,6 +67,8 @@ func StartServer(cfg config.ConfigStruct, assets *rice.Box) {
 	// setup API routes
 	e.GET("/health", handlers.Health())
 	e.GET("/config", handlers.Config())
+
+	e.GET("/camera", echo.WrapHandler(camera.Stream))
 
 	log.Println("starting server on http://" + cfg.Server.ListenAddress + ":" + strconv.Itoa(cfg.Server.ListenPort))
 	e.Logger.Fatal(e.Start(cfg.Server.ListenAddress + ":" + strconv.Itoa(cfg.Server.ListenPort)))

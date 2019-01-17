@@ -1,4 +1,7 @@
 {
+  "camera": {
+    "deviceID": 1
+  },
   "server": {
     "listenPort": 8088,
     "listenAddress": "0.0.0.0"

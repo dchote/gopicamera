@@ -9,6 +9,9 @@ import (
 )
 
 type ConfigStruct struct {
+	Camera struct {
+		DeviceID int `json:"deviceID"`
+	} `json:"camera"`
 	Server struct {
 		ListenAddress string `json:"listenAddress"`
 		ListenPort    int    `json:"listenPort"`

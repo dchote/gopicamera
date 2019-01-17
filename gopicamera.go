@@ -11,6 +11,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/dchote/gopicamera/camera"
 	"github.com/dchote/gopicamera/config"
 	"github.com/dchote/gopicamera/server"
 
@@ -54,6 +55,8 @@ func main() {
 		log.Fatalf("Static assets not found. Build them with npm first.")
 	}
 
+	camera.StartCamera()
+
 	// start the webserver
 	go server.StartServer(*config.Config, staticAssets)
 
@@ -65,6 +68,7 @@ func main() {
 
 	// shut down listener, with a hard timeout
 	server.StopServer()
+	camera.StopCamera()
 
 	// extra grace time
 	time.Sleep(time.Second)

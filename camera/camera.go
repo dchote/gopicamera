@@ -6,7 +6,7 @@ import (
 
 	"github.com/dchote/gopicamera/config"
 
-	"github.com/hybridgroup/mjpeg"
+	"github.com/mattn/go-mjpeg"
 	"gocv.io/x/gocv"
 )
 
@@ -36,6 +36,7 @@ func StartCamera() {
 }
 
 func StopCamera() {
+	Stream.Close()
 	camera.Close()
 }
 
@@ -44,24 +45,29 @@ func CaptureVideo() {
 	defer img.Close()
 
 	for {
-		if ok := camera.Read(&img); !ok {
-			fmt.Printf("Device closed: %v\n", deviceID)
-			return
-		}
-		if img.Empty() {
-			continue
+		if Stream.NWatch() > 0 {
+			if ok := camera.Read(&img); !ok {
+				fmt.Printf("Device closed: %v\n", deviceID)
+				return
+			}
+
+			if img.Empty() {
+				fmt.Printf("Empty image: %v\n", deviceID)
+				continue
+			}
+
+			// write video frame as jpeg to MJPEG stream
+			//gocv.IMEncode(".jpg", img)
+			buf, err := gocv.IMEncode(".jpg", img)
+			if err != nil {
+				fmt.Printf("error encoding: %v\n", deviceID)
+				continue
+			}
+
+			Stream.Update(buf)
 		}
 
-		// write video frame as jpeg to MJPEG stream
-		//gocv.IMEncode(".jpg", img)
-		buf, err := gocv.IMEncode(".jpg", img)
-		if err != nil {
-			continue
-		}
-
-		Stream.UpdateJPEG(buf)
 		// lessen the load a little
 		time.Sleep(50 * time.Millisecond)
-
 	}
 }

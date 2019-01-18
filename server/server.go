@@ -31,7 +31,7 @@ func StartServer(cfg config.ConfigStruct, assets *rice.Box) {
 	// instantiate echo instance
 	e = echo.New()
 	e.HideBanner = true
-	e.Server.ReadTimeout = 10 * time.Second
+	e.Server.ReadTimeout = 1 * time.Second
 	e.Server.WriteTimeout = 0
 
 	// setup middleware

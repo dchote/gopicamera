@@ -36,7 +36,10 @@
     },
     methods: {
       
-    }
+    },
+    mounted() {
+      this.$store.dispatch('cameras/fetchCameras')
+    },
   }
 </script>
 

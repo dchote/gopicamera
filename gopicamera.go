@@ -62,6 +62,10 @@ func main() {
 		log.Fatalf("Static assets not found. Build them with npm first.")
 	}
 
+	// ignore sigpipe that happens when the mjpeg stream is terminated by the client
+	signal.Ignore(syscall.SIGPIPE)
+
+	// start camera
 	camera.StartCamera()
 
 	// start the webserver

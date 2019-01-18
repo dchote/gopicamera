@@ -17,7 +17,7 @@ const getters = {
 
 // actions
 const actions = {
-  getConfig({commit, dispatch}) {
+  getConfig({commit}) {
     return new Promise((resolve, reject) => {
       Vue.axios.get(configURL)
       .then(response => {
@@ -26,11 +26,7 @@ const actions = {
         
         commit('setConfig', response)
         
-        dispatch('cameras/fetchCameras', {}, {root:true}).then(() => {
-          resolve(response)
-        }).catch(function (error) {
-          reject(error)
-        })
+        resolve(response)
       }).catch(function (error) {
         reject(error)
       })

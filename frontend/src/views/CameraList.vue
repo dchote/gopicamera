@@ -4,7 +4,7 @@
       <v-card>
         <v-container fluid grid-list-md>
           <v-layout row wrap>
-            <v-flex xs12 v-for="camera in cameras" :key="camera.name">
+            <v-flex xs12 v-for="camera in cameras" :key="camera.cameraURL">
               <v-card flat tile>
                 <v-img :src="camera.cameraURL" class="white--text">
                   <v-container fill-height fluid>

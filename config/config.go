@@ -57,7 +57,7 @@ func LoadConfig(file string) (*ConfigStruct, error) {
 
 	// build API endpoint URL
 	Config.API.APIURL = "http://" + apiListenAddress + ":" + strconv.Itoa(Config.Server.ListenPort) + "/v1"
-	Config.API.CameraURL = "http://" + apiListenAddress + ":" + strconv.Itoa(Config.Server.ListenPort) + "/camera"
+	Config.API.CameraURL = "http://" + apiListenAddress + ":" + strconv.Itoa(Config.Server.ListenPort) + "/camera.mjpeg"
 
 	return Config, err
 }

@@ -32,7 +32,7 @@ func StartServer(cfg config.ConfigStruct, assets *rice.Box) {
 	e = echo.New()
 	e.HideBanner = true
 	e.Server.ReadTimeout = 10 * time.Second
-	e.Server.WriteTimeout = 30 * time.Second
+	e.Server.WriteTimeout = 0
 
 	// setup middleware
 	e.Use(middleware.Logger())
@@ -68,18 +68,18 @@ func StartServer(cfg config.ConfigStruct, assets *rice.Box) {
 	e.GET("/health", handlers.Health())
 	e.GET("/config", handlers.Config())
 
-	// camera MJPEG stream
-	e.GET("/camera", echo.WrapHandler(camera.Stream))
-
 	// versioned API logic
 	e.GET("/v1/camera/list", handlers.CameraList())
+
+	// camera MJPEG stream
+	e.GET("/camera.mjpeg", echo.WrapHandler(camera.Stream))
 
 	log.Println("starting server on http://" + cfg.Server.ListenAddress + ":" + strconv.Itoa(cfg.Server.ListenPort))
 	e.Logger.Fatal(e.Start(cfg.Server.ListenAddress + ":" + strconv.Itoa(cfg.Server.ListenPort)))
 }
 
 func StopServer() {
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	if err := e.Shutdown(ctx); err != nil {
 		e.Logger.Fatal(err)

@@ -44,9 +44,6 @@ func CaptureVideo() {
 	defer img.Close()
 
 	for {
-		// lessen the load a little
-		time.Sleep(100 * time.Millisecond)
-
 		if ok := camera.Read(&img); !ok {
 			fmt.Printf("Device closed: %v\n", deviceID)
 			return
@@ -54,10 +51,17 @@ func CaptureVideo() {
 		if img.Empty() {
 			continue
 		}
-		// TODO logic for control loop feedback
 
 		// write video frame as jpeg to MJPEG stream
-		buf, _ := gocv.IMEncode(".jpg", img)
+		//gocv.IMEncode(".jpg", img)
+		buf, err := gocv.IMEncode(".jpg", img)
+		if err != nil {
+			continue
+		}
+
 		Stream.UpdateJPEG(buf)
+		// lessen the load a little
+		time.Sleep(50 * time.Millisecond)
+
 	}
 }

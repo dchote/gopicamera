@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-const configURL = 'http://' + location.hostname + ':8088/config'
+const configURL = 'http://' + location.hostname + ':8000/config'
 
 
 // initial state

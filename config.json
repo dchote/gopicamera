@@ -4,6 +4,7 @@
     "name": "Test Camera"
   },
   "server": {
+    "staticAssetsDirectory": "./frontend/dist/",
     "listenPort": 8000,
     "listenAddress": "0.0.0.0"
   }

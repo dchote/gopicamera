@@ -1,4 +1,4 @@
-# building opencv4 on Raspbian
+# Building OpenCV 4 on Raspbian
 
 Install required dependencies
 ```
@@ -11,7 +11,7 @@ sudo apt-get install --yes libjpeg-dev libtiff5-dev libjasper-dev libpng12-dev l
 ```
 ---
 
-An updated version of `checkinstall` fixes a segfault on raspbian (https://github.com/opencv/opencv/issues/8897).
+Build and install an updated version of `checkinstall` to fix the segfault that currently happens on raspbian (https://github.com/opencv/opencv/issues/8897).
 ```
 git clone https://github.com/giuliomoro/checkinstall
 cd checkinstall
@@ -19,4 +19,7 @@ make install
 ```
 ---
 
-Then run `build_opencv4.sh`
+Then start the build process and go have a cup of tea or something...
+```
+./build_opencv4.sh
+```

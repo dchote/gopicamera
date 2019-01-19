@@ -30,7 +30,7 @@ update_config=1
 country=US
 
 network={
-    ssid="WIFI_SSID_"
+    ssid="WIFI_SSID"
     scan_ssid=1
     psk="WIFI_PASSWORD"
     key_mgmt=WPA-PSK
@@ -44,10 +44,10 @@ If you are on a mac or linux system (running avahi) you can ssh to the pi by run
 
 Update Raspbian by running `sudo apt-get update && sudo apt-get upgrade`.  Once updated you can proceed to installing the supporting packages.
 ```
-sudo apt-get install  --yes libtesseract3 ffmpeg libjasper1 libhdf5-100 liblapack3 libatlas3-base libgtk-3-bin
+sudo apt-get install --yes libtesseract3 ffmpeg libjasper1 libhdf5-100 liblapack3 libatlas3-base libgtk-3-bin
 ```
 
-Now download and install the precompiled version of OpenCV4 `wget https://github.com/dchote/gopicamera/raw/master/packages/opencv4_4.0.1-1_armhf.deb` and then `sudo dpkg -i opencv4_4.0.1-1_armhf.deb`.  This is a little verbose at the moment, I hope to cleanup the output later.
+Download and install the precompiled version of OpenCV4 `wget https://github.com/dchote/gopicamera/raw/master/packages/opencv4_4.0.1-1_armhf.deb` and then `sudo dpkg -i opencv4_4.0.1-1_armhf.deb`.  This is a little verbose at the moment, I hope to cleanup the output later.
 
 **Enable the camera** by running `sudo raspi-config`, use the cursor keys to navigate to **Interfacing Options** and then **P1 Camera**, enable the camera.  Press escape to exit to the main menu and then select **Finish**, this will prompt you to reboot, do so.
 

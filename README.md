@@ -11,11 +11,12 @@ One of the first models I will be training is the detection of failed 3d prints 
 
 ## Supporting packages
 
-A precompiled package for OpenCV4 can be found in [/packages](/packages/), please also install all of the other dependancies listed.
+A precompiled package for OpenCV4 can be found in [packages](/packages/), please also install all of the other dependancies listed.
 
 
 ## Using gopicamera
-**This will change once I roll a custom SD card image**
+**NOTE: This will change once I roll a custom SD card image.**
+
 
 ### Initial setup
 
@@ -38,6 +39,7 @@ network={
 ```
 place `wpa_supplicant.conf` in the **boot** volume also. Unmount the SD card and place it in the Pi Zero then apply power.  Wait a little while to allow the pi to boot and show up on your network.
 
+
 ### Configuring the pi
 
 If you are on a mac or linux system (running avahi) you can ssh to the pi by running `ssh pi@raspberrypi.local`, the initial password is 'raspberry'.  Please change the password immediately by typing the `passwd` command and following the prompts.
@@ -51,8 +53,11 @@ Download and install the precompiled version of OpenCV4 `wget https://github.com
 
 **Enable the camera** by running `sudo raspi-config`, use the cursor keys to navigate to **Interfacing Options** and then **P1 Camera**, enable the camera.  Press escape to exit to the main menu and then select **Finish**, this will prompt you to reboot, do so.
 
+
 ### Running gopicamera
 
-Download the latest release from the project releases page https://github.com/dchote/gopicamera/releases/download/v0.0.1/gopicamera, right click **gopicamera** and copy link, then download it to your pi by running `wget *PASTE_LINK_HERE*`. Do the same with `config.json`.
+Download the latest release from the project releases page https://github.com/dchote/gopicamera/releases, from the latest release right click **gopicamera** and copy link, download it to your pi by running `wget *PASTE_LINK_HERE*`. Do the same with `config.json`.
 
-Ensure the bcm2835-v4l2 kernel module is loaded `sudo modprobe bcm2835-v4l2`, edit config.json to suite your needs, if using a MIPI camera ensure `camera.deviceID = -1`. Run as root `sudo ./gopicamera`
+Ensure the bcm2835-v4l2 kernel module is loaded `sudo modprobe bcm2835-v4l2`, edit config.json to suite your needs. 
+
+Run as root `sudo ./gopicamera`

@@ -5,6 +5,5 @@
   },
   "server": {
     "listenPort": 8000,
-    "listenAddress": "0.0.0.0"
   }
 }

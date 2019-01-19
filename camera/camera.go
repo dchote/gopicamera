@@ -29,7 +29,7 @@ func StartCamera() {
 	//defer camera.Close()
 
 	// create the mjpeg stream
-	Stream = mjpeg.NewStream()
+	Stream = mjpeg.NewStreamWithInterval(200 * time.Millisecond)
 
 	// start capturing
 	go CaptureVideo()
@@ -44,8 +44,10 @@ func CaptureVideo() {
 	frame := gocv.NewMat()
 	defer frame.Close()
 
+	var fistFrame = true
+
 	for {
-		if Stream.NWatch() > 0 {
+		if Stream.NWatch() > 0 || fistFrame {
 			if ok := camera.Read(&frame); !ok {
 				fmt.Printf("Device closed: %v\n", deviceID)
 				return
@@ -88,9 +90,10 @@ func CaptureVideo() {
 			}
 
 			Stream.Update(buf)
+			fistFrame = false
 		}
 
 		// lessen the load a little
-		time.Sleep(250 * time.Millisecond)
+		time.Sleep(100 * time.Millisecond)
 	}
 }

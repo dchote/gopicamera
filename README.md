@@ -58,6 +58,8 @@ Download and install the precompiled version of OpenCV4 `wget https://github.com
 
 Download the latest release from the project releases page https://github.com/dchote/gopicamera/releases, from the latest release right click **gopicamera** and copy link, download it to your pi by running `wget *PASTE_LINK_HERE*`. Do the same with **config.json**.
 
-Ensure the bcm2835-v4l2 kernel module is loaded `sudo modprobe bcm2835-v4l2`, edit **config.json** to suite your needs. 
+Ensure the bcm2835-v4l2 kernel module is loaded `sudo modprobe bcm2835-v4l2`, and edit **config.json** to suite your needs. 
 
 Run gopicamera as root `sudo ./gopicamera` it will then tell you the address that you can copy and paste in to your browser to view the camera (example: *starting server on http://172.18.0.117:8000*).
+
+![screenshot2](images/screenshot2.png "Screenshot")

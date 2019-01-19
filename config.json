@@ -1,6 +1,6 @@
 {
   "camera": {
-    "deviceID": 0,
+    "deviceID": -1,
     "name": "Test Camera"
   },
   "server": {

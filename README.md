@@ -11,4 +11,9 @@ One of the first models I will be training is the detection of failed 3d prints 
 
 ## Supporting packages
 
-A precompiled package for OpenCV4 can be found in [/packages](/packages/).
+A precompiled package for OpenCV4 can be found in [/packages](/packages/), please also install all of the other dependancies listed.
+
+
+## Running gopicamera
+
+Ensure the bcm2835-v4l2 kernel module is loaded `sudo modprobe bcm2835-v4l2`, edit config.json to suite your needs, if using a MIPI camera ensure `camera.deviceID = -1`. Run as root `sudo ./gopicamera`

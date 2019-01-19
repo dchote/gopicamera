@@ -18,7 +18,7 @@ type CameraObject struct {
 	Name      string `json:"name"`
 }
 
-type SurveyObjectList struct {
+type CameraObjectList struct {
 	Cameras []*CameraObject `json:"cameras"`
 }
 
@@ -26,7 +26,7 @@ func CameraList() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		// TODO actually build dynamic camera list from mDNS
 
-		cameraList := new(SurveyObjectList)
+		cameraList := new(CameraObjectList)
 
 		camera := &CameraObject{
 			APIURL:    config.Config.API.APIURL,

@@ -33,7 +33,7 @@ Usage: gopicamera [options]
 Options:
   -c, --config=<json>           Specify config file [default: ./config.json]
 	-d, --camera-device=<device>  Specify the devide id of the camera [default: 0]
-	-a, --assets=<dir>            Static assets directory [default: ./frontend/dist]
+	-a, --assets=<dir>            Static assets directory
   -h, --help                    Show this screen.
   -v, --version                 Show version.
 `
@@ -53,7 +53,7 @@ Options:
 	}
 
 	staticAssetsDirectory, _ := args.String("--assets")
-	if staticAssetsDirectory != config.Config.Server.StaticAssetsDirectory && staticAssetsDirectory != "frontend/dist" {
+	if staticAssetsDirectory != "" && staticAssetsDirectory != config.Config.Server.StaticAssetsDirectory {
 		config.Config.Server.StaticAssetsDirectory = staticAssetsDirectory
 	}
 

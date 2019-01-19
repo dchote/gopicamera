@@ -66,7 +66,7 @@ func main() {
 	log.Printf("Loading static assets from %s", config.Config.Server.StaticAssetsDirectory)
 	staticAssets, err = rice.FindBox(config.Config.Server.StaticAssetsDirectory)
 	if err != nil {
-		log.Fatalf("Static assets not found. Build them with npm first.")
+		log.Fatalf("Static assets problem: %s", err)
 	}
 
 	// ignore sigpipe that happens when the mjpeg stream is terminated by the client

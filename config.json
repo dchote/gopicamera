@@ -1,9 +1,12 @@
 {
   "camera": {
     "deviceID": -1,
-    "name": "Test Camera"
+    "name": "Test Camera",
+    "rotate": 0,
+    "flipHorizontal": false,
+    "flipVertical": false
   },
   "server": {
-    "listenPort": 8000,
+    "listenPort": 8000
   }
 }

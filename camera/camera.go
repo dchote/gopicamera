@@ -41,24 +41,47 @@ func StopCamera() {
 }
 
 func CaptureVideo() {
-	img := gocv.NewMat()
-	defer img.Close()
+	frame := gocv.NewMat()
+	defer frame.Close()
 
 	for {
 		if Stream.NWatch() > 0 {
-			if ok := camera.Read(&img); !ok {
+			if ok := camera.Read(&frame); !ok {
 				fmt.Printf("Device closed: %v\n", deviceID)
 				return
 			}
 
-			if img.Empty() {
+			if frame.Empty() {
 				fmt.Printf("Empty image: %v\n", deviceID)
 				continue
 			}
 
-			// write video frame as jpeg to MJPEG stream
-			//gocv.IMEncode(".jpg", img)
-			buf, err := gocv.IMEncode(".jpg", img)
+			// working image
+			img := frame.Clone()
+			if config.Config.Camera.FlipHorizontal == true && config.Config.Camera.FlipVertical == true {
+				gocv.Flip(frame, &img, -1)
+				img.CopyTo(&frame)
+			} else if config.Config.Camera.FlipHorizontal == true {
+				gocv.Flip(frame, &img, 0)
+				img.CopyTo(&frame)
+			} else if config.Config.Camera.FlipVertical == true {
+				gocv.Flip(frame, &img, 1)
+				img.CopyTo(&frame)
+			}
+
+			if config.Config.Camera.Rotate == 90 {
+				gocv.Rotate(frame, &img, 0)
+				img.CopyTo(&frame)
+			} else if config.Config.Camera.Rotate == 180 {
+				gocv.Rotate(frame, &img, 1)
+				img.CopyTo(&frame)
+			} else if config.Config.Camera.Rotate == 270 {
+				gocv.Rotate(frame, &img, 2)
+				img.CopyTo(&frame)
+			}
+
+			// encode our processed frame as a JPEG for the MJPEG stream
+			buf, err := gocv.IMEncode(".jpg", frame)
 			if err != nil {
 				fmt.Printf("error encoding: %v\n", deviceID)
 				continue
@@ -68,6 +91,6 @@ func CaptureVideo() {
 		}
 
 		// lessen the load a little
-		time.Sleep(50 * time.Millisecond)
+		time.Sleep(250 * time.Millisecond)
 	}
 }

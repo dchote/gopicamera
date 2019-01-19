@@ -60,4 +60,4 @@ Download the latest release from the project releases page https://github.com/dc
 
 Ensure the bcm2835-v4l2 kernel module is loaded `sudo modprobe bcm2835-v4l2`, edit config.json to suite your needs. 
 
-Run as root `sudo ./gopicamera`
+Run gopicamera as root `sudo ./gopicamera` it will then tell you the address that you can copy and paste in to your browser to view the camera (example: `starting server on http://172.18.0.117:8000`).

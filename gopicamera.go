@@ -33,7 +33,6 @@ Usage: gopicamera [options]
 Options:
   -c, --config=<json>           Specify config file [default: ./config.json]
 	-d, --camera-device=<device>  Specify the devide id of the camera [default: 0]
-	-a, --assets=<dir>            Static assets directory
   -h, --help                    Show this screen.
   -v, --version                 Show version.
 `
@@ -52,19 +51,13 @@ Options:
 		config.Config.Camera.DeviceID = cameraDeviceOverride
 	}
 
-	staticAssetsDirectory, _ := args.String("--assets")
-	if staticAssetsDirectory != "" && staticAssetsDirectory != config.Config.Server.StaticAssetsDirectory {
-		config.Config.Server.StaticAssetsDirectory = staticAssetsDirectory
-	}
-
 	log.Printf("Config: %+v", config.Config)
 }
 
 func main() {
 	cliArguments()
 
-	log.Printf("Loading static assets from %s", config.Config.Server.StaticAssetsDirectory)
-	staticAssets, err = rice.FindBox(config.Config.Server.StaticAssetsDirectory)
+	staticAssets, err = rice.FindBox("frontend/dist")
 	if err != nil {
 		log.Fatalf("Static assets problem: %s", err)
 	}

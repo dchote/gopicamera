@@ -14,9 +14,8 @@ type ConfigStruct struct {
 		Name     string `json:"name"`
 	} `json:"camera"`
 	Server struct {
-		StaticAssetsDirectory string `json:"staticAssetsDirectory"`
-		ListenAddress         string `json:"listenAddress"`
-		ListenPort            int    `json:"listenPort"`
+		ListenAddress string `json:"listenAddress"`
+		ListenPort    int    `json:"listenPort"`
 	} `json:"server"`
 	API struct {
 		APIURL    string `json:"APIURL"`

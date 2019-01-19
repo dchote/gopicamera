@@ -47,7 +47,7 @@ Options:
 
 	// override the camera device if specified
 	cameraDeviceOverride, _ := args.Int("--camera-device")
-	if cameraDeviceOverride > 0 {
+	if cameraDeviceOverride != 0 {
 		config.Config.Camera.DeviceID = cameraDeviceOverride
 	}
 

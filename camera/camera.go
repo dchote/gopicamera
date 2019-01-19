@@ -82,6 +82,8 @@ func CaptureVideo() {
 				img.CopyTo(&frame)
 			}
 
+			img.Close()
+
 			// encode our processed frame as a JPEG for the MJPEG stream
 			buf, err := gocv.IMEncode(".jpg", frame)
 			if err != nil {

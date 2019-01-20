@@ -56,7 +56,7 @@ Download and install the precompiled version of OpenCV4 `wget https://github.com
 
 ### Running gopicamera
 
-Download the latest release from the project releases page https://github.com/dchote/gopicamera/releases, from the latest release right click **gopicamera** and copy link, download it to your pi by running `wget *PASTE_LINK_HERE*`. Do the same with **config.json**.
+Download the latest release from the project releases page https://github.com/dchote/gopicamera/releases, from the latest release right click **gopicamera.zip** and copy link, download it to your pi by running `wget *PASTE_LINK_HERE*`. Unzip the files `unzip gopicamera.zip`.
 
 Make **gopigocamera** executable `chmod a+x gopigocamera`, ensure the bcm2835-v4l2 kernel module is loaded `sudo modprobe bcm2835-v4l2`, and edit **config.json** to suite your needs. 
 

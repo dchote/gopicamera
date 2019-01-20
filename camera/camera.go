@@ -91,7 +91,7 @@ func CaptureVideo() {
 			img.Close()
 
 			// encode our processed frame as a JPEG for the MJPEG stream
-			buf, err := gocv.IMEncodeWithParams(gocv.JPEGFileExt, frame, []int{gocv.IMWriteJpegQuality, 50, gocv.IMWriteJpegOptimize, 1, gocv.IMWriteJpegProgressive, 1})
+			buf, err := gocv.IMEncodeWithParams(gocv.JPEGFileExt, frame, []int{gocv.IMWriteJpegQuality, 40, gocv.IMWriteJpegLumaQuality, 100, gocv.IMWriteJpegChromaQuality, 100})
 			if err != nil {
 				fmt.Printf("error encoding: %v\n", deviceID)
 				continue

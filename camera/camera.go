@@ -27,11 +27,11 @@ func StartCamera() {
 		return
 	}
 
-	camera.Set(gocv.VideoCaptureFrameWidth, 640)
-	camera.Set(gocv.VideoCaptureFrameHeight, 480)
+	camera.Set(gocv.VideoCaptureFrameWidth, 1280)
+	camera.Set(gocv.VideoCaptureFrameHeight, 1024)
 	camera.Set(gocv.VideoCaptureFPS, 10)
 
-	camera.Set(gocv.VideoCaptureFormat, 5) // mjpeg on the pi
+	//camera.Set(gocv.VideoCaptureFormat, 5)
 	//defer camera.Close()
 
 	// create the mjpeg stream

@@ -83,26 +83,35 @@ func CaptureVideo() {
 				img.CopyTo(&frame)
 			}
 
+			var frameWidth = captureWidth
+			var frameHeight = captureHeight
+
 			if config.Config.Camera.Rotate == 90 {
 				gocv.Rotate(frame, &img, 0)
 				img.CopyTo(&frame)
+
+				frameWidth = captureHeight
+				frameHeight = captureWidth
 			} else if config.Config.Camera.Rotate == 180 {
 				gocv.Rotate(frame, &img, 1)
 				img.CopyTo(&frame)
 			} else if config.Config.Camera.Rotate == 270 {
 				gocv.Rotate(frame, &img, 2)
 				img.CopyTo(&frame)
+
+				frameWidth = captureHeight
+				frameHeight = captureWidth
 			}
 
 			if config.Config.Camera.ShowDateTime == true {
 				var dateTimePosition image.Point
 
 				if config.Config.Camera.DateTimePosition == "top_right" {
-					dateTimePosition = image.Pt(captureWidth-200, 30)
+					dateTimePosition = image.Pt(frameWidth-200, 30)
 				} else if config.Config.Camera.DateTimePosition == "bottom_right" {
-					dateTimePosition = image.Pt(captureWidth-200, captureHeight-20)
+					dateTimePosition = image.Pt(frameWidth-200, frameHeight-20)
 				} else if config.Config.Camera.DateTimePosition == "bottom_left" {
-					dateTimePosition = image.Pt(20, captureHeight-20)
+					dateTimePosition = image.Pt(20, frameHeight-20)
 				} else {
 					dateTimePosition = image.Pt(20, 30)
 				}

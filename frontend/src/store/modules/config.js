@@ -1,6 +1,11 @@
 import Vue from 'vue'
 
-const configURL = 'http://' + location.hostname + ':8000/config'
+var configURL = ''
+if (process.env.NODE_ENV === 'development') {
+  configURL= 'http://' + location.hostname + ':8000/config'
+} else {
+  configURL = 'http://' + location.hostname + ':' + location.port + '/config'
+}
 
 
 // initial state

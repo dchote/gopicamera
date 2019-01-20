@@ -27,15 +27,15 @@ func StartCamera() {
 		return
 	}
 
-	camera.Set(gocv.VideoCaptureFrameWidth, 1024)
-	camera.Set(gocv.VideoCaptureFrameHeight, 768)
+	camera.Set(gocv.VideoCaptureFrameWidth, 640)
+	camera.Set(gocv.VideoCaptureFrameHeight, 480)
 	camera.Set(gocv.VideoCaptureFPS, 5)
 
 	//camera.Set(gocv.VideoCaptureFormat, 5)
 	//defer camera.Close()
 
 	// create the mjpeg stream
-	Stream = mjpeg.NewStreamWithInterval(200 * time.Millisecond)
+	Stream = mjpeg.NewStreamWithInterval(50 * time.Millisecond)
 
 	// start capturing
 	go CaptureVideo()
@@ -91,7 +91,7 @@ func CaptureVideo() {
 			img.Close()
 
 			// encode our processed frame as a JPEG for the MJPEG stream
-			buf, err := gocv.IMEncodeWithParams(gocv.JPEGFileExt, frame, []int{gocv.IMWriteJpegQuality, 40})
+			buf, err := gocv.IMEncodeWithParams(gocv.JPEGFileExt, frame, []int{gocv.IMWriteJpegQuality, 50, gocv.IMWriteJpegOptimize, 1, gocv.IMWriteJpegProgressive, 1})
 			if err != nil {
 				fmt.Printf("error encoding: %v\n", deviceID)
 				continue
@@ -103,6 +103,6 @@ func CaptureVideo() {
 		}
 
 		// lessen the load a little
-		time.Sleep(100 * time.Millisecond)
+		time.Sleep(25 * time.Millisecond)
 	}
 }

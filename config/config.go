@@ -10,11 +10,13 @@ import (
 
 type ConfigStruct struct {
 	Camera struct {
-		DeviceID       int    `json:"deviceID"`
-		Name           string `json:"name"`
-		Rotate         int    `json:"rotate"`
-		FlipHorizontal bool   `json:"flipHorizontal"`
-		FlipVertical   bool   `json:"flipVertical"`
+		DeviceID         int    `json:"deviceID"`
+		Name             string `json:"name"`
+		Rotate           int    `json:"rotate"`
+		FlipHorizontal   bool   `json:"flipHorizontal"`
+		FlipVertical     bool   `json:"flipVertical"`
+		ShowDateTime     bool   `json:"showDateTime"`
+		DateTimePosition string `json:"dateTimePosition"`
 	} `json:"camera"`
 	Server struct {
 		ListenAddress string `json:"listenAddress"`

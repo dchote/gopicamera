@@ -2,6 +2,8 @@ package camera
 
 import (
 	"fmt"
+	"image"
+	"image/color"
 	"time"
 
 	"github.com/dchote/gopicamera/config"
@@ -18,6 +20,10 @@ var (
 	Stream *mjpeg.Stream
 )
 
+const captureWidth = 640
+const captureHeight = 480
+const captureFPS = 5
+
 func StartCamera() {
 	deviceID = config.Config.Camera.DeviceID
 
@@ -27,9 +33,9 @@ func StartCamera() {
 		return
 	}
 
-	camera.Set(gocv.VideoCaptureFrameWidth, 640)
-	camera.Set(gocv.VideoCaptureFrameHeight, 480)
-	camera.Set(gocv.VideoCaptureFPS, 5)
+	camera.Set(gocv.VideoCaptureFrameWidth, captureWidth)
+	camera.Set(gocv.VideoCaptureFrameHeight, captureHeight)
+	camera.Set(gocv.VideoCaptureFPS, captureFPS)
 
 	//camera.Set(gocv.VideoCaptureFormat, 5)
 	//defer camera.Close()
@@ -86,6 +92,23 @@ func CaptureVideo() {
 			} else if config.Config.Camera.Rotate == 270 {
 				gocv.Rotate(frame, &img, 2)
 				img.CopyTo(&frame)
+			}
+
+			if config.Config.Camera.ShowDateTime == true {
+				var dateTimePosition image.Point
+
+				if config.Config.Camera.DateTimePosition == "top_right" {
+					dateTimePosition = image.Pt(captureWidth-200, 30)
+				} else if config.Config.Camera.DateTimePosition == "bottom_right" {
+					dateTimePosition = image.Pt(captureWidth-200, captureHeight-20)
+				} else if config.Config.Camera.DateTimePosition == "bottom_left" {
+					dateTimePosition = image.Pt(20, captureHeight-20)
+				} else {
+					dateTimePosition = image.Pt(20, 30)
+				}
+
+				currentTime := time.Now()
+				gocv.PutText(&frame, currentTime.Format("2006-01-02 15:04:05"), dateTimePosition, gocv.FontHersheyPlain, 1, color.RGBA{255, 255, 255, 0}, 2)
 			}
 
 			img.Close()

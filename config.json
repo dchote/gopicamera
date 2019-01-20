@@ -4,7 +4,9 @@
     "name": "Test Camera",
     "rotate": 0,
     "flipHorizontal": false,
-    "flipVertical": false
+    "flipVertical": false,
+    "showDateTime": true,
+    "dateTimePosition": "top_right"
   },
   "server": {
     "listenPort": 8000

@@ -26,10 +26,16 @@ func StartCamera() {
 		fmt.Printf("Error opening capture device: %v\n", deviceID)
 		return
 	}
+
+	camera.Set(gocv.VideoCaptureFrameWidth, 640)
+	camera.Set(gocv.VideoCaptureFrameHeight, 480)
+	camera.Set(gocv.VideoCaptureFPS, 10)
+
+	camera.Set(gocv.VideoCaptureFormat, 5) // mjpeg on the pi
 	//defer camera.Close()
 
 	// create the mjpeg stream
-	Stream = mjpeg.NewStreamWithInterval(200 * time.Millisecond)
+	Stream = mjpeg.NewStreamWithInterval(50 * time.Millisecond)
 
 	// start capturing
 	go CaptureVideo()
@@ -85,17 +91,18 @@ func CaptureVideo() {
 			img.Close()
 
 			// encode our processed frame as a JPEG for the MJPEG stream
-			buf, err := gocv.IMEncode(".jpg", frame)
+			buf, err := gocv.IMEncodeWithParams(gocv.JPEGFileExt, frame, []int{gocv.IMWriteJpegQuality, 40})
 			if err != nil {
 				fmt.Printf("error encoding: %v\n", deviceID)
 				continue
 			}
 
 			Stream.Update(buf)
+
 			fistFrame = false
 		}
 
 		// lessen the load a little
-		time.Sleep(100 * time.Millisecond)
+		time.Sleep(25 * time.Millisecond)
 	}
 }

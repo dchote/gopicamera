@@ -9,6 +9,6 @@
     "dateTimePosition": "top_right"
   },
   "server": {
-    "listenPort": 8088
+    "listenPort": 8000
   }
 }

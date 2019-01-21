@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net"
 	"os"
-	"strconv"
+	//"strconv"
 )
 
 type ConfigStruct struct {
@@ -47,22 +47,13 @@ func LoadConfig(file string) (*ConfigStruct, error) {
 		return nil, err
 	}
 
-	var apiListenAddress string
-
 	if Config.Server.ListenAddress == "" {
 		Config.Server.ListenAddress = GetLocalIP()
 	}
 
-	// we MUST provide a valid IP to connect to for API purposes
-	if Config.Server.ListenAddress == "0.0.0.0" {
-		apiListenAddress = GetLocalIP()
-	} else {
-		apiListenAddress = Config.Server.ListenAddress
-	}
-
 	// build API endpoint URL
-	Config.API.APIURL = "http://" + apiListenAddress + ":" + strconv.Itoa(Config.Server.ListenPort) + "/v1"
-	Config.API.CameraURL = "http://" + apiListenAddress + ":" + strconv.Itoa(Config.Server.ListenPort) + "/camera.mjpeg"
+	Config.API.APIURL = "/v1"
+	Config.API.CameraURL = "/camera.mjpeg"
 
 	return Config, err
 }

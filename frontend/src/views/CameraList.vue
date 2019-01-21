@@ -1,7 +1,10 @@
 <template>
  <v-layout>
     <v-flex >
-      <v-card>
+      <v-flex xs12 class="text-xs-center" v-if="cameras.length == 0">
+        <v-progress-circular :size="50" color="primary" indeterminate></v-progress-circular>
+      </v-flex>
+      <v-card v-if="cameras.length > 0">
         <v-container fluid grid-list-md>
           <v-layout row wrap>
             <v-flex xs12 v-for="camera in cameras" :key="camera.cameraURL">
@@ -38,7 +41,8 @@
       
     },
     mounted() {
-      this.$store.dispatch('cameras/fetchCameras')
+      var that = this
+      setTimeout(function() { that.$store.dispatch('cameras/fetchCameras')}, 500)
     },
   }
 </script>

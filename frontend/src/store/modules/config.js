@@ -1,12 +1,6 @@
 import Vue from 'vue'
 
-var configURL = ''
-if (process.env.NODE_ENV === 'development') {
-  configURL= 'http://' + location.hostname + ':8000/config'
-} else {
-  configURL = 'http://' + location.hostname + ':' + location.port + '/config'
-}
-
+var configURL = location.protocol + '//' + location.hostname + ':' + location.port + '/config'
 
 // initial state
 const state = {
@@ -17,7 +11,7 @@ const state = {
 
 // getters
 const getters = {
-  isReady: state => state.status == 'ready'
+  isReady: state => state.status == 'ready' || state.status == 'error'
 }
 
 // actions
@@ -27,12 +21,13 @@ const actions = {
       Vue.axios.get(configURL)
       .then(response => {
         // set baseURL so we can just use relative url paths in the rest of the code
-        Vue.axios.defaults.baseURL = response.data.APIURL
+        Vue.axios.defaults.baseURL =  response.data.APIURL
         
-        commit('setConfig', response)
+        commit('load_config', response)
         
         resolve(response)
       }).catch(function (error) {
+        commit('fetch_error')
         reject(error)
       })
     })
@@ -41,7 +36,10 @@ const actions = {
 
 // mutations
 const mutations = {
-  setConfig(state, config) {
+  fetch_error(state) {
+    state.status = 'error'
+  },
+  load_config(state, config) {
     state.status = 'ready'
     state.APIURL = config.data.APIURL
     state.cameraURL = config.data.cameraURL

@@ -41,8 +41,9 @@ const mutations = {
     state.status = 'error'
   },
   load_state(state, payload) {
-    state.cameras = payload.cameras
     state.status = 'loaded'
+    
+    state.cameras = payload.cameras
     
     // eslint-disable-next-line
     console.log('cameras:', state)

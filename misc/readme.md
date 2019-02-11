@@ -1,3 +1,29 @@
+# Building FFMpeg on Raspbian
+
+Install required dependencies, also please install checkinstall as described above.
+
+```
+sudo apt-get install autoconf automake build-essential libass-dev libfreetype6-dev \
+	libsdl1.2-dev libtheora-dev libtool libva-dev libvdpau-dev libvorbis-dev libxcb1-dev libxcb-shm0-dev \
+	libxcb-xfixes0-dev pkg-config texinfo zlib1g-dev libomxil-bellagio-dev
+
+git clone https://github.com/ffmpeg/FFMpeg --depth 1
+cd ~/FFMpeg
+
+./configure --enable-gpl --enable-nonfree --enable-mmal --enable-omx --enable-omx-rpi
+
+make -j4 
+
+sudo checkinstall --default \
+--type debian --install=no \
+--pkgname ffmpeg \
+--deldoc --deldesc --delspec \
+--pakdir ~ --provides ffmpeg \
+--addso --autodoinst --nodoc \
+make install
+```
+
+
 # Building OpenCV 4 on Raspbian
 
 Install required dependencies
@@ -23,3 +49,5 @@ Then start the build process and go have a cup of tea or something...
 ```
 ./build_opencv4.sh
 ```
+
+

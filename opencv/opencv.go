@@ -1,4 +1,4 @@
-package camera
+package opencv
 
 import (
 	"fmt"

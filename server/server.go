@@ -10,8 +10,8 @@ import (
 	//"sync"
 	"time"
 
-	"github.com/dchote/gopicamera/camera"
 	"github.com/dchote/gopicamera/config"
+	"github.com/dchote/gopicamera/ffmpeg"
 	"github.com/dchote/gopicamera/server/handlers"
 
 	"github.com/GeertJohan/go.rice"
@@ -72,7 +72,7 @@ func StartServer(cfg config.ConfigStruct, assets *rice.Box) {
 	e.GET("/v1/camera/list", handlers.CameraList())
 
 	// camera MJPEG stream
-	e.GET("/camera.mjpeg", echo.WrapHandler(camera.Stream))
+	e.GET("/camera.mjpeg", echo.WrapHandler(ffmpeg.Stream))
 
 	log.Println("starting server on http://" + cfg.Server.ListenAddress + ":" + strconv.Itoa(cfg.Server.ListenPort))
 	e.Logger.Fatal(e.Start(cfg.Server.ListenAddress + ":" + strconv.Itoa(cfg.Server.ListenPort)))

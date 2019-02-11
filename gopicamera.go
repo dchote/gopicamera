@@ -11,8 +11,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/dchote/gopicamera/camera"
 	"github.com/dchote/gopicamera/config"
+	"github.com/dchote/gopicamera/ffmpeg"
 	"github.com/dchote/gopicamera/server"
 
 	"github.com/GeertJohan/go.rice"
@@ -66,7 +66,7 @@ func main() {
 	signal.Ignore(syscall.SIGPIPE)
 
 	// start camera
-	camera.StartCamera()
+	ffmpeg.StartCamera()
 
 	// start the webserver
 	go server.StartServer(*config.Config, staticAssets)
@@ -79,7 +79,7 @@ func main() {
 
 	// shut down listener, with a hard timeout
 	server.StopServer()
-	camera.StopCamera()
+	ffmpeg.StopCamera()
 
 	// extra grace time
 	time.Sleep(time.Second)

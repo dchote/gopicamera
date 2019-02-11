@@ -66,7 +66,7 @@ func main() {
 	signal.Ignore(syscall.SIGPIPE)
 
 	// start camera
-	ffmpeg.StartCamera()
+	go ffmpeg.StartCamera()
 
 	// start the webserver
 	go server.StartServer(*config.Config, staticAssets)

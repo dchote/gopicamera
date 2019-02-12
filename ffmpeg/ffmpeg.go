@@ -21,7 +21,8 @@ var (
 	CaptureHeight int
 	CaptureFPS    int
 
-	PixelFormat int32
+	InputPixelFormat  string
+	OutputPixelFormat int32
 
 	Stream *mjpeg.Stream
 )
@@ -30,10 +31,10 @@ func StartCamera() {
 	CaptureWidth = 640
 	CaptureHeight = 480
 
-	PixelFormat = gmf.AV_PIX_FMT_YUVJ422P
+	OutputPixelFormat = gmf.AV_PIX_FMT_YUVJ420P
 
 	// create the mjpeg stream
-	Stream = mjpeg.NewStreamWithInterval(15 * time.Millisecond)
+	Stream = mjpeg.NewStreamWithInterval(25 * time.Millisecond)
 
 	inputCtx := gmf.NewCtx()
 	defer inputCtx.CloseInputAndRelease()
@@ -44,15 +45,16 @@ func StartCamera() {
 		inputCtx.SetInputFormat("avfoundation")
 		DeviceName = "default"
 		CaptureFPS = 30
+		InputPixelFormat = "uyvy422"
 	} else {
 		inputCtx.SetInputFormat("video4linux2")
 		DeviceName = "/dev/video0"
-		CaptureFPS = 10
+		CaptureFPS = 5
+		InputPixelFormat = "yuv420p"
 	}
 
 	err := inputCtx.OpenInputWithOptions(DeviceName, []gmf.Pair{
-		{Key: "pixel_format", Val: "uyvy422"},
-		{Key: "input_format", Val: "mjpeg"},
+		{Key: "pixel_format", Val: InputPixelFormat},
 		{Key: "video_size", Val: fmt.Sprintf("%dx%d", CaptureWidth, CaptureHeight)},
 		{Key: "framerate", Val: strconv.Itoa(CaptureFPS)},
 	})
@@ -77,7 +79,7 @@ func StartCamera() {
 	cc := gmf.NewCodecCtx(codec)
 	defer gmf.Release(cc)
 
-	cc.SetPixFmt(PixelFormat)
+	cc.SetPixFmt(OutputPixelFormat)
 	cc.SetWidth(CaptureWidth)
 	cc.SetHeight(CaptureHeight)
 	cc.SetTimeBase(gmf.AVR{1, 1})
@@ -97,7 +99,7 @@ func StartCamera() {
 	dstFrame := gmf.NewFrame().
 		SetWidth(CaptureWidth).
 		SetHeight(CaptureHeight).
-		SetFormat(PixelFormat) // see above
+		SetFormat(OutputPixelFormat)
 	defer gmf.Release(dstFrame)
 
 	if err := dstFrame.ImgAlloc(); err != nil {

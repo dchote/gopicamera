@@ -1,36 +1,59 @@
 package ffmpeg
 
 import (
-	//"fmt"
+	"fmt"
 	"log"
+	"runtime"
+	"strconv"
 	"time"
 
-	"github.com/dchote/gopicamera/config"
+	//"github.com/dchote/gopicamera/config"
 
-	"github.com/3d0c/gmf"
+	"github.com/dchote/gmf"
 	"github.com/mattn/go-mjpeg"
 )
 
 var (
-	deviceID int
-	err      error
+	DeviceName string
+	err        error
+
+	CaptureWidth  int
+	CaptureHeight int
+	CaptureFPS    int
+
+	PixelFormat int32
 
 	Stream *mjpeg.Stream
 )
 
-const captureWidth = 640
-const captureHeight = 480
-const captureFPS = 5
-
 func StartCamera() {
-	deviceID = config.Config.Camera.DeviceID
+	CaptureWidth = 640
+	CaptureHeight = 480
+	CaptureFPS = 30
+
+	PixelFormat = gmf.AV_PIX_FMT_YUVJ422P
 
 	// create the mjpeg stream
-	Stream = mjpeg.NewStreamWithInterval(50 * time.Millisecond)
+	Stream = mjpeg.NewStreamWithInterval(15 * time.Millisecond)
 
-	// hardcoding mac stuff for debug
-	inputCtx, err := gmf.NewInputCtxWithFormatName("LG UltraFine Display Camera", "avfoundation")
+	inputCtx := gmf.NewCtx()
 	defer inputCtx.CloseInputAndRelease()
+
+	log.Printf("running on %s", runtime.GOOS)
+
+	if runtime.GOOS == "darwin" {
+		inputCtx.SetInputFormat("avfoundation")
+		DeviceName = "default"
+	} else {
+		inputCtx.SetInputFormat("video4linux2")
+		DeviceName = "/dev/video0"
+	}
+
+	err := inputCtx.OpenInputWithOptions(DeviceName, []gmf.Pair{
+		{Key: "pixel_format", Val: "uyvy422"},
+		{Key: "video_size", Val: fmt.Sprintf("%dx%d", CaptureWidth, CaptureHeight)},
+		{Key: "framerate", Val: strconv.Itoa(CaptureFPS)},
+	})
 
 	if err != nil {
 		log.Fatal(err)
@@ -52,10 +75,10 @@ func StartCamera() {
 	cc := gmf.NewCodecCtx(codec)
 	defer gmf.Release(cc)
 
-	cc.SetPixFmt(gmf.AV_PIX_FMT_YUVJ420P)
-	cc.SetWidth(captureWidth)
-	cc.SetHeight(captureHeight)
-	cc.SetTimeBase(srcVideoStream.CodecCtx().TimeBase().AVR())
+	cc.SetPixFmt(PixelFormat)
+	cc.SetWidth(CaptureWidth)
+	cc.SetHeight(CaptureHeight)
+	cc.SetTimeBase(gmf.AVR{1, 1})
 
 	if codec.IsExperimental() {
 		cc.SetStrictCompliance(gmf.FF_COMPLIANCE_EXPERIMENTAL)
@@ -66,13 +89,13 @@ func StartCamera() {
 		return
 	}
 
-	swsCtx := gmf.NewSwsCtx(srcVideoStream.CodecCtx(), cc, gmf.SWS_BICUBIC)
+	swsCtx := gmf.NewSwsCtx(srcVideoStream.CodecCtx(), cc, gmf.SWS_FAST_BILINEAR)
 	defer gmf.Release(swsCtx)
 
 	dstFrame := gmf.NewFrame().
-		SetWidth(captureWidth).
-		SetHeight(captureHeight).
-		SetFormat(gmf.AV_PIX_FMT_YUVJ420P) // see above
+		SetWidth(CaptureWidth).
+		SetHeight(CaptureHeight).
+		SetFormat(PixelFormat) // see above
 	defer gmf.Release(dstFrame)
 
 	if err := dstFrame.ImgAlloc(); err != nil {
@@ -89,9 +112,11 @@ func StartCamera() {
 			// skip non video streams
 			continue
 		}
+
 		ist, err := inputCtx.GetStream(packet.StreamIndex())
 
 	decode:
+
 		frame, err := packet.Frames(ist.CodecCtx())
 		if err != nil {
 			// Retry if EAGAIN
@@ -101,7 +126,7 @@ func StartCamera() {
 			log.Fatal(err)
 		}
 
-		swsCtx.Scale(frame, dstFrame)
+		swsCtx.Scale(frame, dstFrame) // TODO I really want to get rid of this!
 
 		p, err := dstFrame.Encode(cc)
 		if err != nil {

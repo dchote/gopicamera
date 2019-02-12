@@ -29,7 +29,6 @@ var (
 func StartCamera() {
 	CaptureWidth = 640
 	CaptureHeight = 480
-	CaptureFPS = 30
 
 	PixelFormat = gmf.AV_PIX_FMT_YUVJ422P
 
@@ -44,13 +43,16 @@ func StartCamera() {
 	if runtime.GOOS == "darwin" {
 		inputCtx.SetInputFormat("avfoundation")
 		DeviceName = "default"
+		CaptureFPS = 30
 	} else {
 		inputCtx.SetInputFormat("video4linux2")
 		DeviceName = "/dev/video0"
+		CaptureFPS = 10
 	}
 
 	err := inputCtx.OpenInputWithOptions(DeviceName, []gmf.Pair{
 		{Key: "pixel_format", Val: "uyvy422"},
+		{Key: "input_format", Val: "mjpeg"},
 		{Key: "video_size", Val: fmt.Sprintf("%dx%d", CaptureWidth, CaptureHeight)},
 		{Key: "framerate", Val: strconv.Itoa(CaptureFPS)},
 	})

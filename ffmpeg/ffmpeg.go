@@ -29,13 +29,13 @@ var (
 )
 
 func StartCamera() {
-	CaptureWidth = 640
-	CaptureHeight = 480
+	CaptureWidth = 1280
+	CaptureHeight = 720
 
 	OutputPixelFormat = gmf.AV_PIX_FMT_YUVJ420P
 
 	// create the mjpeg stream
-	Stream = mjpeg.NewStreamWithInterval(25 * time.Millisecond)
+	Stream = mjpeg.NewStreamWithInterval(15 * time.Millisecond)
 
 	inputCtx := gmf.NewCtx()
 	defer inputCtx.CloseInputAndRelease()
@@ -64,7 +64,7 @@ func StartCamera() {
 		err := inputCtx.OpenInputWithOptions("/dev/video0", []gmf.Pair{
 			{Key: "input_format", Val: "mjpeg"},
 			{Key: "video_size", Val: fmt.Sprintf("%dx%d", CaptureWidth, CaptureHeight)},
-			{Key: "framerate", Val: strconv.Itoa(5)},
+			{Key: "framerate", Val: strconv.Itoa(30)},
 		})
 
 		if err != nil {
